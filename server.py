@@ -79,6 +79,11 @@ FRONTEND_URL = os.environ.get("FRONTEND_URL", "*")
 CORS_ORIGINS = os.environ.get("CORS_ORIGINS", "")
 
 client = AsyncIOMotorClient(MONGO_URL)
+
+@app.get("/")
+async def root_health_check():
+    return {"status": "healthy", "message": "Trade Gain Backend API is running successfully!"}
+
 db = client[DB_NAME]
 
 app = FastAPI(title="TradeGain Capital API")
