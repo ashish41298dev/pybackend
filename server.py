@@ -78,7 +78,7 @@ FRONTEND_URL = os.environ.get("FRONTEND_URL", "*")
 # domains, etc.). Wildcard "*" disables credentialed CORS automatically.
 CORS_ORIGINS = os.environ.get("CORS_ORIGINS", "")
 
-client = AsyncIOMotorClient(MONGO_URL)
+client = AsyncIOMotorClient(MONGO_URL, srv_service_name='mongodb')
 db = client[DB_NAME]
 
 app = FastAPI(title="TradeGain Capital API")
