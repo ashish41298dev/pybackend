@@ -80,10 +80,6 @@ CORS_ORIGINS = os.environ.get("CORS_ORIGINS", "")
 
 client = AsyncIOMotorClient(MONGO_URL)
 
-@app.get("/")
-async def root_health_check():
-    return {"status": "healthy", "message": "Trade Gain Backend API is running successfully!"}
-
 db = client[DB_NAME]
 
 app = FastAPI(title="TradeGain Capital API")
@@ -96,6 +92,10 @@ async def check_mongo():
         print(f"📂 Database: {DB_NAME}")
     except Exception as e:
         print("❌ MongoDB Connection Failed:", e)
+@app.get("/")
+async def root_health_check():
+    return {"status": "healthy", "message": "Trade Gain Backend API is running successfully!"}
+
 api = APIRouter(prefix="/api")
 
 # ---- CORS ------------------------------------------------------------------
