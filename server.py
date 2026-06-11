@@ -84,6 +84,24 @@ db = client[DB_NAME]
 
 app = FastAPI(title="TradeGain Capital API")
 
+raw_origins = os.getenv("CORS_ORIGINS", "http://localhost:3000")
+
+# Clean up the string: strip out trailing slashes and spaces, split by commas if multiple values exist
+origins = [origin.strip().rstrip("/") for origin in raw_origins.split(",")]
+
+# Add localhost to origins automatically for local development peace of mind
+if "http://localhost:3000" not in origins:
+    origins.append("http://localhost:3000")
+    origins.append("http://127.0.0.1:3000")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,  # Mandatory to match your frontend's withCredentials: true
+    allow_methods=["*"],     # Allows OPTIONS, POST, GET, etc.
+    allow_headers=["*"],     # Allows all content headers
+)
+
 @app.on_event("startup")
 async def check_mongo():
     try:
